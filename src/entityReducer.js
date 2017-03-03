@@ -24,6 +24,7 @@ const entityReducer = (reducer, options = {}) => (name) => {
                         ? merger(
                             mergedState[entityId],
                             revive(entities[entityId]),
+                            action,
                         )
                         : revive(entities[entityId])
                     ,

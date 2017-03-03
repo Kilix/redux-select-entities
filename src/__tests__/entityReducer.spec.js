@@ -94,22 +94,41 @@ describe('entityReducer', () => {
         expect(state[1].revived).toBe(true);
     });
 
-    it('should use the optional merger function to solve conflicts', () => {
+    describe('should use the optional merger function to solve conflicts', () => {
         const reducer = state => state;
-        const hor = entityReducer(reducer, {
-            actionTypes: ['GET_ONE_TODO'],
-            merger: (stateTodo, payloadTodo) => ({ ...stateTodo, value: payloadTodo.value }),
-        })('todo');
-        const stateWithInitialTodo = hor(undefined, {
-            type: 'GET_ONE_TODO',
-            payload: normalize({ id: 1, content: 'initial', value: 1 }, todoSchema),
+
+        it('should use the merger function to solve conflicts', () => {
+            const hor = entityReducer(reducer, {
+                actionTypes: ['GET_ONE_TODO'],
+                merger: (stateTodo, payloadTodo) => ({ ...stateTodo, value: payloadTodo.value }),
+            })('todo');
+            const stateWithInitialTodo = hor(undefined, {
+                type: 'GET_ONE_TODO',
+                payload: normalize({ id: 1, content: 'initial', value: 1 }, todoSchema),
+            });
+            const stateAfterNextTodo = hor(stateWithInitialTodo, {
+                type: 'GET_ONE_TODO',
+                payload: normalize({ id: 1, content: 'new', value: 2 }, todoSchema),
+            });
+            const todo = stateAfterNextTodo[1];
+            expect(todo.content).toBe('initial');
+            expect(todo.value).toBe(2);
         });
-        const stateAfterNextTodo = hor(stateWithInitialTodo, {
-            type: 'GET_ONE_TODO',
-            payload: normalize({ id: 1, content: 'new', value: 2 }, todoSchema),
+
+        it('should pass the action to the merger', () => {
+            const merger = jest.fn();
+            const hor = entityReducer(reducer, {
+                actionTypes: ['GET_ONE_TODO'],
+                merger,
+            })('todo');
+            const actionTodo = { id: 1, content: 'initial', value: 1 };
+            const action = {
+                type: 'GET_ONE_TODO',
+                payload: normalize(actionTodo, todoSchema),
+            };
+            const initialTodo = {};
+            hor({ 1: initialTodo }, action);
+            expect(merger).toHaveBeenCalledWith(initialTodo, actionTodo, action);
         });
-        const todo = stateAfterNextTodo[1];
-        expect(todo.content).toBe('initial');
-        expect(todo.value).toBe(2);
     });
 });
