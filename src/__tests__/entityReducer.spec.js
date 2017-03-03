@@ -7,14 +7,14 @@ const todoSchema = new schema.Entity('todo');
 describe('entityReducer', () => {
     it('should return a reducer', () => {
         const reducer = () => {};
-        const hor = entityReducer(reducer, { name: 'todo' });
+        const hor = entityReducer(reducer)('todo');
         expect(typeof hor).toBe('function');
     });
 
     it('should forward the state and the action to the passed reducer', () => {
         const newState = {};
         const reducer = jest.fn(() => newState);
-        const hor = entityReducer(reducer, { name: 'todo' });
+        const hor = entityReducer(reducer)('todo');
         const state = {};
         const action = {};
         const returnedState = hor(state, action);
@@ -24,7 +24,7 @@ describe('entityReducer', () => {
 
     it('should initialize the state with an empty object', () => {
         const reducer = state => state;
-        const hor = entityReducer(reducer, { name: 'todo' });
+        const hor = entityReducer(reducer)('todo');
         const initialState = hor(undefined, {});
         expect(initialState).toEqual({});
     });
@@ -32,9 +32,9 @@ describe('entityReducer', () => {
     describe('configuration', () => {
         it('should throw if name is not a string', () => {
             expect(() => {
-                entityReducer(() => {}, { name: 1 });
+                entityReducer(() => {})(1);
             }).toThrow(new Error(
-                'The reducer higher order reducer should be passed a string for name',
+                'The higher order reducer should be passed a string for name',
             ));
         });
     });
@@ -45,10 +45,7 @@ describe('entityReducer', () => {
             'GET_ONE_TODO',
             'GET_TODO_LIST',
         ];
-        const hor = entityReducer(reducer, {
-            name: 'todo',
-            actionTypes,
-        });
+        const hor = entityReducer(reducer, { actionTypes })('todo');
         const todo1 = { id: 1, content: 'do not forget' };
         const getOneTodo = {
             type: 'GET_ONE_TODO',
@@ -86,10 +83,9 @@ describe('entityReducer', () => {
     it('should pass the normalized entities through the revive function', () => {
         const reducer = state => state;
         const hor = entityReducer(reducer, {
-            name: 'todo',
             actionTypes: ['GET_ONE_TODO'],
             revive: todo => ({ ...todo, revived: true }),
-        });
+        })('todo');
         const getOneTodo = {
             type: 'GET_ONE_TODO',
             payload: normalize({ id: 1, content: 'do not forget' }, todoSchema),
@@ -101,10 +97,9 @@ describe('entityReducer', () => {
     it('should use the optional merger function to solve conflicts', () => {
         const reducer = state => state;
         const hor = entityReducer(reducer, {
-            name: 'todo',
             actionTypes: ['GET_ONE_TODO'],
             merger: (stateTodo, payloadTodo) => ({ ...stateTodo, value: payloadTodo.value }),
-        });
+        })('todo');
         const stateWithInitialTodo = hor(undefined, {
             type: 'GET_ONE_TODO',
             payload: normalize({ id: 1, content: 'initial', value: 1 }, todoSchema),

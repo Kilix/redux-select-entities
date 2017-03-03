@@ -1,13 +1,12 @@
-const entityReducer = (reducer, options) => {
+const entityReducer = (reducer, options = {}) => (name) => {
     const {
     actionTypes = [],
-    name,
     revive = entity => entity,
     merger = (stateEntity, payloadEntity) => payloadEntity,
   } = options;
 
     if (typeof name !== 'string') {
-        throw new Error('The reducer higher order reducer should be passed a string for name');
+        throw new Error('The higher order reducer should be passed a string for name');
     }
 
     // TODO considers making it a named function for better stack traces

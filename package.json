@@ -22,5 +22,7 @@
     "jest": "^19.0.1",
     "normalizr": "^3.2.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "redux": "^3.6.0"
+  }
 }
