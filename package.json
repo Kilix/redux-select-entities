@@ -5,6 +5,7 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "test": "jest --watch",
+    "test:ci": "jest",
     "lint": "eslint ./src"
   },
   "author": "aulefevre@kilix.fr",
