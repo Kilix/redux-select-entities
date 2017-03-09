@@ -1,8 +1,8 @@
 {
   "name": "redux-select-entities",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "npm-run-all --parallel build:*",
     "build:main": "babel src --out-dir lib --ignore .spec.js",
@@ -19,6 +19,9 @@
     "normalizr",
     "redux",
     "reselect"
+  ],
+  "files": [
+    "lib"
   ],
   "author": "aulefevre@kilix.fr",
   "license": "MIT",
