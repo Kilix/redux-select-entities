@@ -33,18 +33,13 @@ describe('entityReducer', () => {
         it('should throw if name is not a string', () => {
             expect(() => {
                 entityReducer(() => {})(1);
-            }).toThrow(new Error(
-                'The higher order reducer should be passed a string for name',
-            ));
+            }).toThrow(new Error('The higher order reducer should be passed a string for name'));
         });
     });
 
     describe('normalization', () => {
         const reducer = state => state;
-        const actionTypes = [
-            'GET_ONE_TODO',
-            'GET_TODO_LIST',
-        ];
+        const actionTypes = ['GET_ONE_TODO', 'GET_TODO_LIST'];
         const hor = entityReducer(reducer, { actionTypes })('todo');
         const todo1 = { id: 1, content: 'do not forget' };
         const getOneTodo = {

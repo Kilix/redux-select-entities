@@ -1,9 +1,9 @@
 const entityReducer = (reducer, options = {}) => (name) => {
     const {
-    actionTypes = [],
-    revive = entity => entity,
-    merger = (stateEntity, payloadEntity) => payloadEntity,
-  } = options;
+        actionTypes = [],
+        revive = entity => entity,
+        merger = (stateEntity, payloadEntity) => payloadEntity,
+    } = options;
 
     if (typeof name !== 'string') {
         throw new Error('The higher order reducer should be passed a string for name');
@@ -21,13 +21,8 @@ const entityReducer = (reducer, options = {}) => (name) => {
                     ...mergedState,
                     // If the entity is already in the state, use the merger function
                     [entityId]: mergedState[entityId]
-                        ? merger(
-                            mergedState[entityId],
-                            revive(entities[entityId]),
-                            action,
-                        )
-                        : revive(entities[entityId])
-                    ,
+                        ? merger(mergedState[entityId], revive(entities[entityId]), action)
+                        : revive(entities[entityId]),
                 }),
                 state,
             );
