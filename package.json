@@ -2,18 +2,33 @@
   "name": "redux-select-entities",
   "version": "0.1.0",
   "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
+  "main": "src/index.js",
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "npm-run-all --parallel build:*",
+    "build:main": "babel src --out-dir lib --ignore .spec.js",
+    "build:umd": "webpack --output-filename index.umd.js -p",
     "test": "jest --watch",
     "test:ci": "jest",
     "lint": "eslint ./src"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AugustinLF/redux-select-entities.git"
+  },
+  "keywords": [
+    "normalizr",
+    "redux",
+    "reselect"
+  ],
   "author": "aulefevre@kilix.fr",
   "license": "MIT",
   "devDependencies": {
     "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.1.8",
+    "cross-env": "^3.1.4",
     "eslint": "^3.16.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
@@ -21,7 +36,9 @@
     "eslint-plugin-react": "^6.10.0",
     "flow-bin": "^0.39.0",
     "jest": "^19.0.1",
-    "normalizr": "^3.2.2"
+    "normalizr": "^3.2.2",
+    "npm-run-all": "^4.0.2",
+    "webpack": "^2.2.1"
   },
   "dependencies": {
     "redux": "^3.6.0"
