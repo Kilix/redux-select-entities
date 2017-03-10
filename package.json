@@ -9,7 +9,9 @@
     "build:umd": "webpack --output-filename index.umd.js -p",
     "test": "jest --watch",
     "test:ci": "jest",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "precommit": "lint-staged",
+    "format": "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write 'src/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -38,12 +40,22 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
     "flow-bin": "^0.39.0",
+    "husky": "^0.13.2",
     "jest": "^19.0.1",
+    "lint-staged": "^3.3.1",
     "normalizr": "^3.2.2",
     "npm-run-all": "^4.0.2",
+    "prettier": "^0.21.0",
     "webpack": "^2.2.1"
   },
   "dependencies": {
     "redux": "^3.6.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write",
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
