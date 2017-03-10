@@ -1,9 +1,9 @@
-import createEntitiesReducer from '../createEntitiesReducer';
+import combineReducersWithEntities from '../combineReducersWithEntities';
 
-describe('createEntitiesReducer', () => {
+describe('combineReducersWithEntities', () => {
     it('should set the name of each entity reducer', () => {
         const todoReducer = jest.fn(() => () => {});
-        createEntitiesReducer({
+        combineReducersWithEntities({
             todo: todoReducer,
         });
         expect(todoReducer).toHaveBeenCalledWith('todo');
@@ -13,7 +13,7 @@ describe('createEntitiesReducer', () => {
         // the reducer returned by entityReducer
         const realReducer = jest.fn(() => 'bla');
         const todoReducer = () => realReducer;
-        const reducer = createEntitiesReducer({
+        const reducer = combineReducersWithEntities({
             todo: todoReducer,
         });
         const action = {};
@@ -25,7 +25,7 @@ describe('createEntitiesReducer', () => {
     it('should handle the other reducers', () => {
         const layoutReducer = jest.fn(() => 'bla');
         const entityReducers = { todo: () => () => null };
-        const reducer = createEntitiesReducer(entityReducers, {
+        const reducer = combineReducersWithEntities(entityReducers, {
             layout: layoutReducer,
         });
         const initialState = {

@@ -1,5 +1,4 @@
-import entityReducer from '../entityReducer';
-import createEntitiesReducer from '../createEntitiesReducer';
+import { entityReducer, combineReducersWithEntities, select } from '../index';
 
 describe('integration test', () => {
     const todoReducer = state => state;
@@ -10,7 +9,7 @@ describe('integration test', () => {
     const entityUserReducer = entityReducer(userReducer, {
         actionTypes: ['GET_ONE_USER'],
     });
-    const appReducer = createEntitiesReducer(
+    const appReducer = combineReducersWithEntities(
         {
             todo: entityTodoReducer,
             user: entityUserReducer,
@@ -42,5 +41,20 @@ describe('integration test', () => {
                 },
             },
         });
+    });
+
+    it('should select normalized entities', () => {
+        const state = appReducer(undefined, {
+            type: 'GET_ONE_TODO',
+            payload: {
+                entities: {
+                    todo: {
+                        1: { id: 1, value: 'not a todo' },
+                    },
+                },
+            },
+        });
+        const todo = select('todo', state, 1);
+        expect(todo.value).toBe('not a todo');
     });
 });
