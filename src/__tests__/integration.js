@@ -10,18 +10,21 @@ describe('integration test', () => {
     const entityUserReducer = entityReducer(userReducer, {
         actionTypes: ['GET_ONE_USER'],
     });
-    const entitiesReducer = createEntitiesReducer({
-        todo: entityTodoReducer,
-        user: entityUserReducer,
-    });
+    const appReducer = createEntitiesReducer(
+        {
+            todo: entityTodoReducer,
+            user: entityUserReducer,
+        },
+        {},
+    );
 
     it('should initialize all the reducers', () => {
-        const initialState = entitiesReducer(undefined, {});
-        expect(initialState).toEqual({ todo: {}, user: {} });
+        const initialState = appReducer(undefined, {});
+        expect(initialState).toEqual({ entities: { todo: {}, user: {} } });
     });
 
     it('should normalize the entities', () => {
-        const newState = entitiesReducer(undefined, {
+        const newState = appReducer(undefined, {
             type: 'GET_ONE_TODO',
             payload: {
                 entities: {
@@ -32,9 +35,11 @@ describe('integration test', () => {
             },
         });
         expect(newState).toEqual({
-            user: {},
-            todo: {
-                1: { id: 1, value: 'not a todo' },
+            entities: {
+                user: {},
+                todo: {
+                    1: { id: 1, value: 'not a todo' },
+                },
             },
         });
     });

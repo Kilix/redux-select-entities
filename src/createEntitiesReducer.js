@@ -1,13 +1,16 @@
 import { combineReducers } from 'redux';
 
-const createEntitiesReducer = reducerMap => combineReducers(
-    Object.keys(reducerMap).reduce(
-        (reducers, reducerName) => ({
-            ...reducers,
-            [reducerName]: reducerMap[reducerName](reducerName),
-        }),
-        {},
+const createEntitiesReducer = (entitiesReducerMap, reducerMap) => combineReducers({
+    entities: combineReducers(
+        Object.keys(entitiesReducerMap).reduce(
+            (reducers, reducerName) => ({
+                ...reducers,
+                [reducerName]: entitiesReducerMap[reducerName](reducerName),
+            }),
+            {},
+        ),
     ),
-);
+    ...reducerMap,
+});
 
 export default createEntitiesReducer;
