@@ -1,6 +1,6 @@
 {
   "name": "redux-select-entities",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
   "main": "lib/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build:main": "babel src --out-dir lib --ignore .spec.js",
     "build:umd": "webpack --output-filename index.umd.js -p",
     "test": "jest --watch",
-    "test:ci": "jest",
+    "test:ci": "jest --coverage && codecov",
     "lint": "eslint ./src",
     "precommit": "lint-staged",
     "format": "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write 'src/**/*.js'"
@@ -34,6 +34,7 @@
     "babel-loader": "^6.3.2",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.1.8",
+    "codecov": "^1.0.1",
     "cross-env": "^3.1.4",
     "eslint": "^3.16.1",
     "eslint-config-airbnb": "^14.1.0",
