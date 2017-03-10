@@ -125,5 +125,18 @@ describe('entityReducer', () => {
             hor({ 1: initialTodo }, action);
             expect(merger).toHaveBeenCalledWith(initialTodo, actionTodo, action);
         });
+
+        it('should by default overwrite the state value', () => {
+            const hor = entityReducer(reducer, {
+                actionTypes: ['GET_ONE_TODO'],
+            })('todo');
+            const actionTodo = { id: 1, content: 'after' };
+            const action = {
+                type: 'GET_ONE_TODO',
+                payload: normalize(actionTodo, todoSchema),
+            };
+            const newState = hor({ 1: { id: 1, content: 'before' } }, action);
+            expect(newState[1].content).toBe('after');
+        });
     });
 });
