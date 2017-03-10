@@ -9,7 +9,6 @@ const entityReducer = (reducer, options = {}) => (name) => {
         throw new Error('The higher order reducer should be passed a string for name');
     }
 
-    // TODO considers making it a named function for better stack traces
     return (state = {}, action) => {
         let updatedState = state;
 

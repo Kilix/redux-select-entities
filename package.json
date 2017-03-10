@@ -4,6 +4,7 @@
   "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
   "main": "lib/index.js",
   "scripts": {
+    "prebuild": "rimraf lib/",
     "build": "npm-run-all --parallel build:*",
     "build:main": "babel src --out-dir lib --ignore .spec.js",
     "build:umd": "webpack --output-filename index.umd.js -p",
@@ -46,9 +47,11 @@
     "normalizr": "^3.2.2",
     "npm-run-all": "^4.0.2",
     "prettier": "^0.21.0",
+    "rimraf": "^2.6.1",
     "webpack": "^2.2.1"
   },
   "dependencies": {
+    "lodash.curry": "^4.1.1",
     "redux": "^3.6.0"
   },
   "lint-staged": {
