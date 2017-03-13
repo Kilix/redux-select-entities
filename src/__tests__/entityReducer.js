@@ -73,6 +73,14 @@ describe('entityReducer', () => {
             hor(stateAfterOneTodo, getTodoList);
             expect(stateAfterOneTodo[2]).toBe(undefined);
         });
+
+        it('should be able to handle missing entities', () => {
+            const stateAfter = hor(stateAfterOneTodo, {
+                type: 'GET_TODO_LIST',
+                payload: normalize([], [todoSchema]),
+            });
+            expect(stateAfter).toBe(stateAfterOneTodo);
+        });
     });
 
     it('should pass the normalized entities through the revive function', () => {
