@@ -1,27 +1,6 @@
 import combineReducersWithEntities from '../combineReducersWithEntities';
 
 describe('combineReducersWithEntities', () => {
-    it('should set the name of each entity reducer', () => {
-        const todoReducer = jest.fn(() => () => {});
-        combineReducersWithEntities({
-            todo: todoReducer,
-        });
-        expect(todoReducer).toHaveBeenCalledWith('todo');
-    });
-
-    it('should forward the named reducer to combineReducer', () => {
-        // the reducer returned by entityReducer
-        const realReducer = jest.fn(() => 'bla');
-        const todoReducer = () => realReducer;
-        const reducer = combineReducersWithEntities({
-            todo: todoReducer,
-        });
-        const action = {};
-        const newState = reducer({ entities: { todo: 'a' } }, action);
-        expect(realReducer).toHaveBeenCalledWith('a', action);
-        expect(newState).toEqual({ entities: { todo: 'bla' } });
-    });
-
     it('should handle the other reducers', () => {
         const layoutReducer = jest.fn(() => 'bla');
         const entityReducers = { todo: () => () => null };
@@ -39,5 +18,17 @@ describe('combineReducersWithEntities', () => {
             entities: { todo: null },
             layout: 'bla',
         });
+    });
+
+    it("should map the entities reducers to the 'entities' key", () => {
+        const realReducer = jest.fn(() => 'bla');
+        const todoReducer = () => realReducer;
+        const reducer = combineReducersWithEntities({
+            todo: todoReducer,
+        });
+        const action = {};
+        const newState = reducer({ entities: { todo: 'a' } }, action);
+        expect(realReducer).toHaveBeenCalledWith('a', action);
+        expect(newState).toEqual({ entities: { todo: 'bla' } });
     });
 });
