@@ -1,7 +1,7 @@
 import curry from 'lodash.curry';
 
-const select = curry((entityName, state, elementId) => {
-    const entityState = state.entities[entityName];
+export const customSelect = selectEntities => curry((entityName, state, elementId) => {
+    const entityState = selectEntities(state)[entityName];
     if (typeof entityState !== 'object') {
         throw new Error(
             `The getter creator received a state that did not include ${entityName} entities`,
@@ -11,4 +11,4 @@ const select = curry((entityName, state, elementId) => {
     return entityState[String(elementId)] || null;
 });
 
-export default select;
+export default customSelect(state => state.entities);
