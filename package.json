@@ -1,6 +1,6 @@
 {
   "name": "redux-select-entities",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
   "main": "lib/index.js",
   "scripts": {
@@ -12,7 +12,8 @@
     "test:ci": "jest --coverage && codecov",
     "lint": "eslint ./src",
     "precommit": "lint-staged",
-    "format": "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write 'src/**/*.js'"
+    "format": "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write 'src/**/*.js'",
+    "publish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",
