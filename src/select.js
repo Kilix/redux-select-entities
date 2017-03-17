@@ -1,6 +1,8 @@
 import curry from 'lodash.curry';
 
-export const customSelect = selectEntities => curry((entityName, state, elementId) => {
+const getEntities = state => state.entities;
+
+const customSelectAll = selectEntities => curry((entityName, state) => {
     const entityState = selectEntities(state)[entityName];
     if (typeof entityState !== 'object') {
         throw new Error(
@@ -8,7 +10,15 @@ export const customSelect = selectEntities => curry((entityName, state, elementI
         );
     }
 
+    return entityState;
+});
+const selectAll = customSelectAll(getEntities);
+
+const customSelect = selectEntities => curry((entityName, state, elementId) => {
+    const entityState = customSelectAll(selectEntities)(entityName, state);
+
     return entityState[String(elementId)] || null;
 });
+const select = customSelect(getEntities);
 
-export default customSelect(state => state.entities);
+export { select, customSelect, selectAll, customSelectAll };

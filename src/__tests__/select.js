@@ -1,4 +1,4 @@
-import select, { customSelect } from '../select';
+import { select, customSelect, selectAll, customSelectAll } from '../select';
 
 describe('customSelect', () => {
     const selectData = customSelect(state => state.data);
@@ -31,9 +31,35 @@ describe('customSelect', () => {
     });
 });
 
+describe('customSelectAll', () => {
+    const getAllData = customSelectAll(state => state.data);
+
+    it('should throw when passed a state that does not contain the wanted entity type', () => {
+        expect(() => {
+            getAllData('todo', { data: { contacts: {} } });
+        }).toThrow(
+            new Error('The getter creator received a state that did not include todo entities'),
+        );
+    });
+
+    it('should return the map of entities', () => {
+        const map = { 1: { content: 1 } };
+        const todoMap = getAllData('todo', { data: { todo: map } });
+        expect(todoMap).toBe(map);
+    });
+});
+
 describe('select', () => {
     it('should look for the entities in state.entities', () => {
         const todo = select('todo', { entities: { todo: { 1: { content: 1 } } } }, 1);
         expect(todo.content).toBe(1);
+    });
+});
+
+describe('selectAll', () => {
+    it('should look for the entities in state.entities', () => {
+        const todoMap = {};
+        const todos = selectAll('todo', { entities: { todo: todoMap } });
+        expect(todos).toBe(todoMap);
     });
 });
