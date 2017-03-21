@@ -104,10 +104,35 @@ console.log(newState);
 
 ```
 
-| Name | Type | Description |
-|:---|:---|:---:|:---|
-|`actionTypes`|`Array<string >`|The list of the actions where the reducer should search the normalized entities|
-|`revive`|function||
-|`merger`|function||
+## API
 
+### entityReducer(reducer, options)
+Takes first the reducer function, and an optional object to configure how the normalization behavior. The reducer function will be called for each action, as if it was not enhanced by entityReducer, but the state passed to the reducer will first pass through the higher-order reducer, where the normalization is handled.
 
+Option Name     |   Type      | Default       | Description
+--------------------|--------------|--------------|--------------------------------
+actionTypes     |   array       |   [ ]      |   the list of the actions where the reducer should search the normalized entities
+revive          |   function    |       |   if set, each entity to normalize will pass through this function before being set in the state
+merger          |   function    | override  |   If an entity to normalize is already set in the state, the merger function will be called with first the entity from the state, then the one from the action, and finally the whole action. The return value of the function will be set in the state.
+
+`entityReducer` does not return directly the enhanced reducer, but a function that take a single string parameter, that is the name used to declare the normalization schema (in this example, `new schema.Entity('todo')`, the name is `'todo`). This function returns the enhanced reducer. Usually, you won't have to pass the name manually, since `combineReducersWithEntities` (through a call to `createEntitiesReducer`) takes care of it.
+
+### combineReducersWithEntities(entitiesReducerMap, reducerMap)
+A wrapper around redux's `combineReducers` to create the main app reducer, that both handles the app's reducers, and the entities ones. The first parameter is an object litteral where each key is the name of an entity (see `entityReducer` doc) and the value the function returned by `entityReducer`. The second parameter is the map of the reducers, the one that would usually passed to `combineReducers`.
+
+### createEntitiesReducer(entitiesReducerMap)
+A wrapper around redux's `combineReducers` to create the entities reducer. Its parameter is an object litteral where each key is the name of an entity (see `entityReducer` doc) and the value the function returned by `entityReducer`.
+
+This function is exposed for people who don't want to bind the entities to the `entities` key of the state.
+
+### select(entityName, state, entityId) (this function is [curried](https://lodash.com/docs/4.17.4#curry))
+Returns the entity corresponding if it exists, null if it doesn't.
+
+### selectAll(entityName, state) (this function is [curried](https://lodash.com/docs/4.17.4#curry))
+Returns the map of entities corresponding.
+
+### customSelect(selectEntitiesState)
+Takes a function returning the section of the state where the entities are stored. Return a method with the same signature and behavior than select. `customSelect(state => state.entities)(...)` is equivalent to `select(...)`.
+
+### customSelectAll(selectEntitiesState)
+Takes a function returning the section of the state where the entities are stored. Return a method with the same signature and behavior than selectAll. `customSelectAll(state => state.entities)(...)` is equivalent to `selectAll(...)`.
