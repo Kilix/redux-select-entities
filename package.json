@@ -8,6 +8,7 @@
     "build": "npm-run-all --parallel build:*",
     "build:main": "babel src --out-dir lib --ignore .spec.js",
     "build:umd": "webpack --output-filename index.umd.js -p",
+    "flow": "flow check",
     "test": "jest --watch",
     "test:ci": "jest --coverage && codecov",
     "lint": "eslint ./src",
@@ -31,7 +32,9 @@
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
+    "babel-eslint": "^7.2.0",
     "babel-loader": "^6.3.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.1.8",
     "codecov": "^1.0.1",
@@ -41,7 +44,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
-    "flow-bin": "^0.39.0",
+    "flow-bin": "^0.42.0",
     "husky": "^0.13.2",
     "jest": "^19.0.1",
     "lint-staged": "^3.3.1",
@@ -58,7 +61,6 @@
   "lint-staged": {
     "*.js": [
       "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write",
-      "eslint --fix",
       "git add"
     ]
   }
