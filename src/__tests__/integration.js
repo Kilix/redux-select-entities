@@ -1,4 +1,7 @@
+import { schema, normalize } from 'normalizr';
 import { entityReducer, combineReducersWithEntities, select } from '../index';
+
+const todoSchema = new schema.Entity('todo');
 
 describe('integration test', () => {
     const todoReducer = state => state;
@@ -14,7 +17,9 @@ describe('integration test', () => {
             todo: entityTodoReducer,
             user: entityUserReducer,
         },
-        {},
+        {
+            // here put the app's other reducers
+        },
     );
 
     it('should initialize all the reducers', () => {
@@ -25,13 +30,7 @@ describe('integration test', () => {
     it('should normalize the entities', () => {
         const newState = appReducer(undefined, {
             type: 'GET_ONE_TODO',
-            payload: {
-                entities: {
-                    todo: {
-                        1: { id: 1, value: 'not a todo' },
-                    },
-                },
-            },
+            payload: normalize({ id: 1, value: 'not a todo' }, todoSchema),
         });
         expect(newState).toEqual({
             entities: {
@@ -46,13 +45,7 @@ describe('integration test', () => {
     it('should select normalized entities', () => {
         const state = appReducer(undefined, {
             type: 'GET_ONE_TODO',
-            payload: {
-                entities: {
-                    todo: {
-                        1: { id: 1, value: 'not a todo' },
-                    },
-                },
-            },
+            payload: normalize({ id: 1, value: 'not a todo' }, todoSchema),
         });
         const todo = select('todo', state, 1);
         expect(todo.value).toBe('not a todo');

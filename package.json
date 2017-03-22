@@ -58,6 +58,9 @@
     "lodash.curry": "^4.1.1",
     "redux": "^3.6.0"
   },
+  "peerDependencies": {
+    "normalizr": "^3.2.2"
+  },
   "lint-staged": {
     "*.js": [
       "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write",

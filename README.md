@@ -1,10 +1,10 @@
 # redux-select-entities
 
-[![build status](https://img.shields.io/travis/AugustinLF/redux-select-entities.svg)]()
-[![codecov coverage](https://codecov.io/gh/AugustinLF/redux-select-entities/branch/master/graph/badge.svg)](https://codecov.io/gh/AugustinLF/redux-select-entities)
+[![build status](https://travis-ci.org/Kilix/redux-select-entities.svg)](https://travis-ci.org/Kilix/redux-select-entities)
+[![codecov coverage](https://codecov.io/gh/kilix/redux-select-entities/branch/master/graph/badge.svg)](https://codecov.io/gh/kilix/redux-select-entities)
 [![npm](https://img.shields.io/npm/v/redux-select-entities.svg)]()
 
-Light abstraction over normalizr and reselect to handle normalized entities, using higher-order-reducers.
+Light abstraction to use with [normalizr](https://github.com/paularmstrong/normalizr/) to handle normalized entities, using higher-order-reducers.
 
 ## Getting Started
 Install `redux-select-entities` via npm:
@@ -53,6 +53,7 @@ You now have a state which has the following shape:
     layout: layoutState,
 }
 ```
+This lets you use the `select` function to get any entity from your state. By calling `select('todo', state, 1)`, you'll get the todo of id 1.
 
 ## Usage
 The most important part of the API is done by the `entityReducer` [higher-order reducer](http://redux.js.org/docs/recipes/reducers/SplittingReducerLogic.html#splitting-up-reducer-logic). It takes a reducer and an optional option parameter (without any options, the higher-order reducer won't do anything for you beside initializing the state).
@@ -75,33 +76,51 @@ const enhancedTodoReducer = entitiesReducer(
         actionTypes: ['GET_TODO'],
     },
 );
-const newState = enhancedTodoReducer(
+
+const appReducer = combineWithEntitiesReducer({todo: enhancedTodoReducer});
+
+const newState = appReducer(
     state,
     {
         type: 'GET_TODO',
-        // This is done for you by normalizr
-        payload: {
-            entities: {
-                1: {
-                    id: 1,
-                    content: 'be amazing',
-                },
-            },
-        },
+        payload: normalize({ id: 1, content: 'be amazing' }, new schema.Entity('todo')),
     },
-)
-// This is necessary for entitiesReducer to know where to find the entities in the payload
-// It will be done for you by combineReducersWithEntities
-('todo');
+);
 ```
 
 The enhanced reducer automatically normalized the todos for you, by returning a map containing the todos:
 ```javascript
-console.log(newState);
+console.log(newState.entities.todo);
 {
     1: { id: 1, content: 'be amazing' }
 }
+```
+While the structure of the entities section of the state is public (any breaking change would mean a major semver bump), you are encouraged to use the `select` and `selectAll` functions to retrieve entities.
 
+```javascript
+select('todo', newState, 1); // { id: 1, content: 'be amazing' }
+selectAll('todo', newState); // { 1: { id: 1, content: 'be amazing' } }
+```
+`selectAll` is mostly useful if you need to retrieve some entities with something else than their id. For instance:
+```javascript
+const todoMap = selectAll('todo', state);
+
+// This gives you an array containing all the todos of the todoMap that are done
+Object.values(todoMap).filter(
+    (todo) => todo.done === true,
+)
+```
+This kind of pattern works well with reselect's API, by letting you do things like:
+```javascript
+const getConnectedUserTodos = createSelector(
+    [
+        selectAll('todo'),
+        getConnectedUserId, // globalState => id
+    ],
+    // As long as neither the todos, neither the userId changes, the following function
+    // won't be called
+    (todoMap, userId) => Object.values(todoMap).filter(todo => todo.createdBy === userId),
+)
 ```
 
 ## API
