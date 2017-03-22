@@ -6,4 +6,5 @@ notifications:
 script:
       - npm run lint
       - npm run test:ci
+      - npm run flow
       - npm run build

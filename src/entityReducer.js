@@ -1,4 +1,20 @@
-const entityReducer = (reducer, options = {}) => (name) => {
+// @flow
+type Options<E> = {
+    actionTypes?: Array<string>,
+    revive?: (entity: any) => E,
+    merger?: (a: E, b: E) => E,
+};
+export type Map<E> = { [string | number]: E };
+type Action = {
+    type: string,
+    payload: {
+        entities: { [string]: Map<*> },
+    },
+};
+export type Reducer<E> = (state: Map<E>, action: Action) => Map<E>;
+const entityReducer = <E>(reducer: Reducer<E>, options: Options<E> = {}) => (
+    name: string,
+): Reducer<E> => {
     const {
         actionTypes = [],
         revive = entity => entity,
@@ -11,7 +27,7 @@ const entityReducer = (reducer, options = {}) => (name) => {
         throw new Error('The higher order reducer should be passed a string for name');
     }
 
-    return (state = {}, action) => {
+    return (state: Map<E> = {}, action: Action): Map<E> => {
         let updatedState = state;
 
         // Handle the merge of the received entities and the current state
@@ -20,7 +36,7 @@ const entityReducer = (reducer, options = {}) => (name) => {
 
             if (entities) {
                 updatedState = Object.keys(entities).reduce(
-                    (mergedState, entityId) => ({
+                    (mergedState: Map<E>, entityId) => ({
                         ...mergedState,
                         // If the entity is already in the state, use the merger function
                         [entityId]: mergedState[entityId]
