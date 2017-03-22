@@ -4,14 +4,14 @@ type Options<E> = {
     revive?: (entity: any) => E,
     merger?: (a: E, b: E) => E,
 };
-type Map<E> = { [string | number]: E };
+export type Map<E> = { [string | number]: E };
 type Action = {
     type: string,
     payload: {
         entities: { [string]: Map<*> },
     },
 };
-type Reducer<E> = (state: Map<E>, action: Action) => Map<E>;
+export type Reducer<E> = (state: Map<E>, action: Action) => Map<E>;
 const entityReducer = <E>(reducer: Reducer<E>, options: Options<E> = {}) => (
     name: string,
 ): Reducer<E> => {

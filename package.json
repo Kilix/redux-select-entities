@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "rimraf lib/",
     "build": "npm-run-all --parallel build:*",
-    "build:main": "babel src --out-dir lib --ignore .spec.js",
+    "build:main": "babel src --out-dir lib --ignore '**/__tests__/**'",
     "build:umd": "webpack --output-filename index.umd.js -p",
     "flow": "flow check",
     "test": "jest --watch",

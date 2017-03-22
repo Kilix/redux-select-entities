@@ -1,24 +1,34 @@
+// @flow
 import curry from 'lodash.curry';
 
-const getEntities = state => state.entities;
+import type { Map } from './entityReducer';
 
-const customSelectAll = selectEntities => curry((entityName, state) => {
-    const entityState = selectEntities(state)[entityName];
-    if (typeof entityState !== 'object') {
-        throw new Error(
-            `The getter creator received a state that did not include ${entityName} entities`,
-        );
-    }
+type EntityState = {
+    [string]: Map<*>,
+};
+type EntityGetter = (state: Object) => EntityState;
 
-    return entityState;
-});
+const getEntities: EntityGetter = state => state.entities;
+
+const customSelectAll = (selectEntities: EntityGetter) =>
+    curry((entityName: string, state: Object) => {
+        const entityState = selectEntities(state)[entityName];
+        if (typeof entityState !== 'object') {
+            throw new Error(
+                `The getter creator received a state that did not include ${entityName} entities`,
+            );
+        }
+
+        return entityState;
+    });
 const selectAll = customSelectAll(getEntities);
 
-const customSelect = selectEntities => curry((entityName, state, elementId) => {
-    const entityState = customSelectAll(selectEntities)(entityName, state);
+const customSelect = (selectEntities: EntityGetter) =>
+    curry((entityName: string, state: Object, elementId: string | number): Object | null => {
+        const entityState = customSelectAll(selectEntities)(entityName, state);
 
-    return entityState[String(elementId)] || null;
-});
+        return entityState[String(elementId)] || null;
+    });
 const select = customSelect(getEntities);
 
 export { select, customSelect, selectAll, customSelectAll };
