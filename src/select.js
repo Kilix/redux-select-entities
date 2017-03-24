@@ -4,7 +4,7 @@ import curry from 'lodash.curry';
 import type { Map } from './entityReducer';
 
 type EntityState = {
-    [string]: Map<*>,
+    [id: string]: Map<*>,
 };
 type EntityGetter = (state: Object) => EntityState;
 
