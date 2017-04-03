@@ -1,5 +1,5 @@
 // @flow
-type Options<E> = {
+type Options<E: Object> = {
     actionTypes?: Array<string>,
     revive?: (entity: any) => E,
     merger?: (a: E, b: E) => E,
@@ -11,15 +11,15 @@ type Action = {
         entities: { [id: string]: Map<*> },
     },
 };
-export type Reducer<E> = (state: Map<E>, action: Action) => Map<E>;
-const entityReducer = <E>(reducer: Reducer<E>, options: Options<E> = {}) => (
+export type Reducer<E: Object> = (state: Map<E>, action: Action) => Map<E>;
+const entityReducer = <E: Object>(reducer: Reducer<E>, options: Options<E> = {}) => (
     name: string,
 ): Reducer<E> => {
     const {
         actionTypes = [],
         revive = entity => entity,
-        // By default, replace the entity from the state with the one from the action's payload
-        merger = (stateEntity, payloadEntity) => payloadEntity,
+        // By default, merge the entity from the state and the one from the action's payload
+        merger = (stateEntity, payloadEntity) => ({ ...stateEntity, ...payloadEntity }),
     } = options;
 
     // The name is required since it is used to find the entities in the payload

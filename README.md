@@ -132,7 +132,7 @@ Option Name     |   Type      | Default       | Description
 --------------------|--------------|--------------|--------------------------------
 actionTypes     |   array       |   [ ]      |   the list of the actions where the reducer should search the normalized entities
 revive          |   function    |       |   if set, each entity to normalize will pass through this function before being set in the state
-merger          |   function    | override  |   If an entity to normalize is already set in the state, the merger function will be called with first the entity from the state, then the one from the action, and finally the whole action. The return value of the function will be set in the state.
+merger          |   function    | merge  |   If an entity to normalize is already set in the state, the merger function will be called with first the entity from the state, then the one from the action, and finally the whole action. The return value of the function will be set in the state.
 
 `entityReducer` does not return directly the enhanced reducer, but a function that take a single string parameter, that is the name used to declare the normalization schema (in this example, `new schema.Entity('todo')`, the name is `'todo`). This function returns the enhanced reducer. Usually, you won't have to pass the name manually, since `combineReducersWithEntities` (through a call to `createEntitiesReducer`) takes care of it.
 

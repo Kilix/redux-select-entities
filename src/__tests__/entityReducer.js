@@ -134,7 +134,7 @@ describe('entityReducer', () => {
             expect(merger).toHaveBeenCalledWith(initialTodo, actionTodo, action);
         });
 
-        it('should by default overwrite the state value', () => {
+        it('should by default merge the state and the payload value', () => {
             const hor = entityReducer(reducer, {
                 actionTypes: ['GET_ONE_TODO'],
             })('todo');
@@ -143,8 +143,8 @@ describe('entityReducer', () => {
                 type: 'GET_ONE_TODO',
                 payload: normalize(actionTodo, todoSchema),
             };
-            const newState = hor({ 1: { id: 1, content: 'before' } }, action);
-            expect(newState[1].content).toBe('after');
+            const newState = hor({ 1: { id: 1, content: 'before', comment: 'A comment' } }, action);
+            expect(newState[1]).toEqual({ id: 1, content: 'after', comment: 'A comment' });
         });
     });
 });
