@@ -1,70 +1,67 @@
 {
-  "name": "redux-select-entities",
-  "version": "2.0.0",
-  "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
-  "main": "lib/index.js",
-  "scripts": {
-    "prebuild": "rimraf lib/",
-    "build": "npm-run-all --parallel build:*",
-    "build:main": "babel src --out-dir lib --ignore '**/__tests__/**'",
-    "build:umd": "webpack --output-filename index.umd.js -p",
-    "flow": "flow check",
-    "test": "jest --watch",
-    "test:ci": "jest --coverage && codecov",
-    "lint": "eslint ./src",
-    "precommit": "lint-staged",
-    "format": "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write 'src/**/*.js'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AugustinLF/redux-select-entities.git"
-  },
-  "keywords": [
-    "normalizr",
-    "redux",
-    "reselect"
-  ],
-  "files": [
-    "lib"
-  ],
-  "author": "aulefevre@kilix.fr",
-  "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.23.0",
-    "babel-core": "^6.23.1",
-    "babel-eslint": "^7.2.0",
-    "babel-loader": "^6.3.2",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-env": "^1.1.8",
-    "codecov": "^1.0.1",
-    "cross-env": "^3.1.4",
-    "eslint": "^3.16.1",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.0",
-    "flow-bin": "^0.42.0",
-    "husky": "^0.13.2",
-    "jest": "^19.0.1",
-    "lint-staged": "^3.3.1",
-    "normalizr": "^3.2.2",
-    "npm-run-all": "^4.0.2",
-    "prettier": "^0.21.0",
-    "rimraf": "^2.6.1",
-    "webpack": "^2.2.1"
-  },
-  "dependencies": {
-    "lodash.curry": "^4.1.1",
-    "redux": "^3.6.0"
-  },
-  "peerDependencies": {
-    "normalizr": "^3.2.2"
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write",
-      "git add"
-    ]
-  }
+    "name": "redux-select-entities",
+    "version": "2.0.0",
+    "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
+    "main": "lib/index.js",
+    "scripts": {
+        "prebuild": "rimraf lib/",
+        "build": "npm-run-all --parallel build:*",
+        "build:main": "babel src --out-dir lib --ignore '**/__tests__/**'",
+        "build:umd": "webpack --output-filename index.umd.js -p",
+        "build:flow": "babel-flow src --out-dir lib --ignore src/__tests__/,src/typingTests.js",
+        "flow": "flow check",
+        "test": "jest --watch",
+        "test:ci": "jest --coverage && codecov",
+        "lint": "eslint ./src",
+        "precommit": "lint-staged",
+        "format": "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write 'src/**/*.js'",
+        "prepublishOnly": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/AugustinLF/redux-select-entities.git"
+    },
+    "keywords": ["normalizr", "redux", "reselect"],
+    "files": ["lib"],
+    "author": "aulefevre@kilix.fr",
+    "license": "MIT",
+    "devDependencies": {
+        "babel-cli": "^6.23.0",
+        "babel-core": "^6.23.1",
+        "babel-eslint": "^7.2.0",
+        "babel-loader": "^6.3.2",
+        "babel-plugin-transform-flow-strip-types": "^6.22.0",
+        "babel-plugin-transform-object-rest-spread": "^6.23.0",
+        "babel-preset-env": "^1.1.8",
+        "codecov": "^1.0.1",
+        "cross-env": "^3.1.4",
+        "eslint": "^3.16.1",
+        "eslint-config-airbnb": "^14.1.0",
+        "eslint-plugin-import": "^2.2.0",
+        "eslint-plugin-jsx-a11y": "^4.0.0",
+        "eslint-plugin-react": "^6.10.0",
+        "flow-bin": "^0.52.0",
+        "husky": "^0.13.2",
+        "jest": "^19.0.1",
+        "lint-staged": "^3.3.1",
+        "normalizr": "^3.2.2",
+        "npm-run-all": "^4.0.2",
+        "prettier": "^0.21.0",
+        "rimraf": "^2.6.1",
+        "webpack": "^2.2.1"
+    },
+    "dependencies": {
+        "babel-cli-flow": "^1.0.0",
+        "lodash.curry": "^4.1.1",
+        "redux": "^3.6.0"
+    },
+    "peerDependencies": {
+        "normalizr": "^3.2.2"
+    },
+    "lint-staged": {
+        "*.js": [
+            "prettier --trailing-comma all --single-quote --tab-width 4 --print-width 100 --write",
+            "git add"
+        ]
+    }
 }

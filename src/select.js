@@ -1,11 +1,8 @@
 // @flow
 import curry from 'lodash.curry';
 
-import type { Map } from './entityReducer';
+import type { EntityState, Select, SelectAll } from './types';
 
-type EntityState = {
-    [id: string]: Map<*>,
-};
 type EntityGetter = (state: Object) => EntityState;
 
 const getEntities: EntityGetter = state => state.entities;
@@ -21,7 +18,7 @@ const customSelectAll = (selectEntities: EntityGetter) =>
 
         return entityState;
     });
-const selectAll = customSelectAll(getEntities);
+const selectAll: SelectAll = customSelectAll(getEntities);
 
 const customSelect = (selectEntities: EntityGetter) =>
     curry((entityName: string, state: Object, elementId: string | number): Object | null => {
@@ -29,6 +26,6 @@ const customSelect = (selectEntities: EntityGetter) =>
 
         return entityState[String(elementId)] || null;
     });
-const select = customSelect(getEntities);
+const select: Select = customSelect(getEntities);
 
 export { select, customSelect, selectAll, customSelectAll };

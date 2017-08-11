@@ -3,12 +3,10 @@ import { combineReducers } from 'redux';
 
 import createEntitiesReducer, { type EntitiesReducerMap } from './createEntitiesReducer';
 
-type ReducerMap<T> = { [string]: (state: T, action: Object) => T };
-
-const combineReducersWithEntities = <T: Object>(
+const combineReducersWithEntities = (
     entitiesReducerMap: EntitiesReducerMap,
-    reducerMap: ReducerMap<T>,
-) => combineReducers({
+    reducerMap: Object,
+): any => combineReducers({
         entities: createEntitiesReducer(entitiesReducerMap),
         ...reducerMap,
     });
