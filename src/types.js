@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable */
 // Struggling with typings in real life
 export type Map<E> = Object;
 
