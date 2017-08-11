@@ -1,4 +1,4 @@
-import { select, customSelect, selectAll, customSelectAll } from '../select';
+import { select, customSelect, selectAll, customSelectAll, selectWhere } from '../select';
 
 describe('customSelect', () => {
     const selectData = customSelect(state => state.data);
@@ -61,5 +61,20 @@ describe('selectAll', () => {
         const todoMap = {};
         const todos = selectAll('todo', { entities: { todo: todoMap } });
         expect(todos).toBe(todoMap);
+    });
+});
+
+describe('selectWhere', () => {
+    it('should query an entity with a function', () => {
+        const state = {
+            id: 1,
+            entities: {
+                user: {
+                    1: { id: 1, name: 'John' },
+                },
+            },
+        };
+        const john = selectWhere('user', s => s.id, state);
+        expect(john.name).toBe('John');
     });
 });

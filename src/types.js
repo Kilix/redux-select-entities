@@ -18,3 +18,10 @@ type _SelectAll1 = (key: string) => (state: State) => Map<*>;
 type _SelectAll2 = (key: string, state: State) => Map<*>;
 
 export type SelectAll = _SelectAll1 & _SelectAll2;
+
+type Where<T: Object> = (state: T) => ?number;
+type _SelectWhere1 = <T>(key: string) => (where: Where<T>) => (state: T) => *;
+type _SelectWhere2 = <T>(key: string) => (where: Where<T>, state: T) => *;
+type _SelectWhere3 = <T>(key: string, where: Where<T>) => (state: T) => *;
+type _SelectWhere4 = <T>(key: string, where: Where<T>, state: T) => *;
+export type SelectWhere = _SelectWhere1 & _SelectWhere2 & _SelectWhere3 & _SelectWhere4;

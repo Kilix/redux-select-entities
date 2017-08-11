@@ -1,7 +1,7 @@
 // @flow
 import curry from 'lodash.curry';
 
-import type { EntityState, Select, SelectAll } from './types';
+import type { EntityState, Select, SelectAll, SelectWhere } from './types';
 
 type EntityGetter = (state: Object) => EntityState;
 
@@ -28,4 +28,10 @@ const customSelect = (selectEntities: EntityGetter) =>
     });
 const select: Select = customSelect(getEntities);
 
-export { select, customSelect, selectAll, customSelectAll };
+function uncurriedSelectWhere<T: Object>(entityName: string, where: (s: T) => ?number, state: T) {
+    const id = where(state);
+    return select(entityName, state, id);
+}
+const selectWhere: SelectWhere = curry(uncurriedSelectWhere);
+
+export { select, customSelect, selectAll, customSelectAll, selectWhere };

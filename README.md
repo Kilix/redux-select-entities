@@ -155,3 +155,6 @@ Takes a function returning the section of the state where the entities are store
 
 ### customSelectAll(selectEntitiesState)
 Takes a function returning the section of the state where the entities are stored. Return a method with the same signature and behavior than selectAll. `customSelectAll(state => state.entities)(...)` is equivalent to `selectAll(...)`.
+
+### selectWhere(entityName, where, state) (this function is [curried](https://lodash.com/docs/4.17.4#curry))
+Returns the entity whose id corresponds which equals where(state).
