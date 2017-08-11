@@ -1,6 +1,6 @@
 {
     "name": "redux-select-entities",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Simple abstraction over normalizr and reselect to handle normalized entities",
     "main": "lib/index.js",
     "scripts": {
@@ -21,8 +21,14 @@
         "type": "git",
         "url": "git+https://github.com/AugustinLF/redux-select-entities.git"
     },
-    "keywords": ["normalizr", "redux", "reselect"],
-    "files": ["lib"],
+    "keywords": [
+        "normalizr",
+        "redux",
+        "reselect"
+    ],
+    "files": [
+        "lib"
+    ],
     "author": "aulefevre@kilix.fr",
     "license": "MIT",
     "devDependencies": {
