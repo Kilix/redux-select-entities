@@ -97,6 +97,21 @@ describe('entityReducer', () => {
         expect(state[1].revived).toBe(true);
     });
 
+    it('should normalize with normalizeIf', () => {
+        const reducer = state => state;
+        const hor = entityReducer(reducer, {
+            normalizeIf: action => action.meta && action.meta.normalize === true,
+        })('todo');
+        const todo1 = { id: 1, content: 'do not forget' };
+        const getOneTodo = {
+            type: 'GET_ONE_TODO',
+            payload: normalize(todo1, todoSchema),
+            meta: { normalize: true },
+        };
+        const stateAfterOneTodo = hor(undefined, getOneTodo);
+        expect(stateAfterOneTodo[1]).toEqual(todo1);
+    });
+
     describe('should use the optional merger function to solve conflicts', () => {
         const reducer = state => state;
 

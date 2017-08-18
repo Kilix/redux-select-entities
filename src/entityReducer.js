@@ -12,6 +12,7 @@ type Options<E: Object> = {
     actionTypes?: Array<string>,
     revive?: (entity: any) => E,
     merger?: (a: E, b: E, action: Action) => E,
+    normalizeIf?: (action: Action) => boolean,
 };
 
 export type Reducer<E: Object> = (state: Map<E>, action: Action) => Map<E>;
@@ -23,6 +24,7 @@ function entityReducer<E: Object>(reducer: Reducer<E>, options: Options<E> = {})
             // By default, merge the entity from the state and the one from the action's payload
             // eslint-disable-next-line no-unused-vars
             merger = (stateEntity, payloadEntity, action) => ({ ...stateEntity, ...payloadEntity }),
+            normalizeIf,
         } = options;
 
         // The name is required since it is used to find the entities in the payload
@@ -34,7 +36,7 @@ function entityReducer<E: Object>(reducer: Reducer<E>, options: Options<E> = {})
             let updatedState = state;
 
             // Handle the merge of the received entities and the current state
-            if (actionTypes.includes(action.type)) {
+            if (actionTypes.includes(action.type) || (normalizeIf && normalizeIf(action))) {
                 const entities = action.payload.entities[name];
 
                 if (entities) {
