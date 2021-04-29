@@ -3,7 +3,10 @@
     "rules": {
         "indent": [
             0
-        ]
+        ],
+        "arrow-parens": 0,
+        "object-curly-newline": 0,
+        "implicit-arrow-linebreak": 0
     },
-    "parser": "babel-eslint"
+    "parser": "@babel/eslint-parser"
 }
